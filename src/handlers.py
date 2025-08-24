@@ -28,3 +28,10 @@ async def choose_category(callback: CallbackQuery):
         text=AnswerMessage.tariff,
         reply_markup=get_kb_buy()
     )
+
+
+@dp.callback_query(F.data == "transactions")
+async def choose_category(callback: CallbackQuery):
+    await callback.message.answer(
+        text='История транзаций'
+    )
