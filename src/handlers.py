@@ -35,3 +35,10 @@ async def choose_category(callback: CallbackQuery):
     await callback.message.answer(
         text='История транзаций'
     )
+
+
+@dp.callback_query(F.data == "contact")
+async def choose_category(callback: CallbackQuery):
+    await callback.message.answer(
+        text='В случае каких-либо вопросов пишите:\n@ivankredo'
+    )
