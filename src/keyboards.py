@@ -13,3 +13,13 @@ def get_main_bk():
     ]
     keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
     return keyboard
+
+
+def get_kb_buy() -> InlineKeyboardMarkup:
+    buttons = [
+        [InlineKeyboardButton(text='Оплатить 1 месяц', callback_data="buy_one")],
+        [InlineKeyboardButton(text='Оплатить 3 месяца', callback_data="buy_three")],
+        [InlineKeyboardButton(text='Оплатить 6 месяцев', callback_data="buy_six")],
+    ]
+    keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
+    return keyboard
