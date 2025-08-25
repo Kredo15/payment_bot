@@ -1,7 +1,7 @@
 from datetime import datetime
 from decimal import Decimal
 
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import (
     BigInteger,
     ForeignKey,
@@ -17,7 +17,7 @@ from src.database.enums import (
 )
 
 
-class Users(Base):
+class UsersOrm(Base):
     __tablename__ = "users"
 
     id: Mapped[intpk]
@@ -28,8 +28,21 @@ class Users(Base):
     subscription_end_date: Mapped[datetime | None]
     is_active: Mapped[bool] = mapped_column(default=False)
 
+    payment: Mapped[list["PaymentsOrm"]] = relationship(
+       back_populates='user', cascade='all, delete-orphan'
+    )
+    history: Mapped[list["SubscriptionHistoryOrm"]] = relationship(
+        back_populates='user', cascade='all, delete-orphan'
+    )
+    admin: Mapped[list["AdminsOrm"]] = relationship(
+        back_populates='user', cascade='all, delete-orphan'
+    )
+    logs: Mapped[list["ActivityLogsOrm"]] = relationship(
+        back_populates='user', cascade='all, delete-orphan'
+    )
 
-class Payments(Base):
+
+class PaymentsOrm(Base):
     __tablename__ = "payments"
 
     id: Mapped[intpk]
@@ -43,8 +56,13 @@ class Payments(Base):
     subscription_period: Mapped[int]
     created_at: Mapped[created_at]
 
+    user: Mapped["UsersOrm"] = relationship("UsersOrm", back_populates="payment")
+    history: Mapped[list["SubscriptionHistoryOrm"]] = relationship(
+        back_populates='payment', cascade='all, delete-orphan'
+    )
 
-class Subscriptions(Base):
+
+class SubscriptionsOrm(Base):
     __tablename__ = "subscriptions"
 
     id: Mapped[intpk]
@@ -57,8 +75,12 @@ class Subscriptions(Base):
     created_at: Mapped[created_at]
     updated_at: Mapped[datetime | None]
 
+    history: Mapped[list["SubscriptionHistoryOrm"]] = relationship(
+        back_populates='subscription', cascade='all, delete-orphan'
+    )
 
-class SubscriptionHistory(Base):
+
+class SubscriptionHistoryOrm(Base):
     __tablename__ = "subscription_history"
 
     id: Mapped[intpk]
@@ -78,8 +100,12 @@ class SubscriptionHistory(Base):
     )
     created_at: Mapped[created_at]
 
+    user: Mapped["UsersOrm"] = relationship("UsersOrm", back_populates="history")
+    subscription: Mapped["SubscriptionsOrm"] = relationship("SubscriptionsOrm", back_populates="history")
+    payment: Mapped["PaymentsOrm"] = relationship("PaymentsOrm", back_populates="history")
 
-class Admins(Base):
+
+class AdminsOrm(Base):
     __tablename__ = "admins"
 
     id: Mapped[intpk]
@@ -89,8 +115,10 @@ class Admins(Base):
     role: Mapped[RoleEnum]
     created_at: Mapped[created_at]
 
+    user: Mapped["UsersOrm"] = relationship("UsersOrm", back_populates="admin")
 
-class ActivityLogs(Base):
+
+class ActivityLogsOrm(Base):
     __tablename__ = "activity_logs"
 
     id: Mapped[intpk]
@@ -100,3 +128,5 @@ class ActivityLogs(Base):
     action: Mapped[str]
     details: Mapped[str] = mapped_column(type_=JSON)
     created_at: Mapped[created_at]
+
+    user: Mapped["UsersOrm"] = relationship("UsersOrm", back_populates="logs")
