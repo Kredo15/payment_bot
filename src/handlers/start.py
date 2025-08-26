@@ -1,17 +1,20 @@
 from aiogram import F
 from aiogram.filters import Command
 from aiogram.types import Message, CallbackQuery
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.app import dp
 from src.core.message import AnswerMessage
 from src.keyboards import main_kb, get_kb_buy
+from src.utils import check_admin
 
 
 @dp.message(Command(commands=["start", "menu"]))
-async def start_command(message: Message):
+async def start_command(message: Message, session: AsyncSession):
+    is_admin = await check_admin(message.from_user.id, session)
     await message.answer(
         text='Выбери действие',
-        reply_markup=await main_kb(message.from_user.id)
+        reply_markup=await main_kb(is_admin)
     )
 
 

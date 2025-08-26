@@ -5,17 +5,16 @@ from aiogram.types import (
     InlineKeyboardMarkup
 )
 
-from src.utils import get_admins
+from src.core.buttons import Buttons
 
 
-async def main_kb(user_telegram_id: int):
+async def main_kb(is_admin: bool):
     kb_list = [
-        [KeyboardButton(text="💳 Тарифные планы"), KeyboardButton(text="👤 Профиль")],
-        [KeyboardButton(text="🔑 Моя подписка"), KeyboardButton(text="🤝 Поддержка")]
+        [KeyboardButton(text=Buttons.tariff), KeyboardButton(text=Buttons.tariff)],
+        [KeyboardButton(text=Buttons.subscription), KeyboardButton(text=Buttons.support)]
     ]
-    admins = await get_admins()
-    if user_telegram_id in admins:
-        kb_list.append([KeyboardButton(text="⚙️ Админ панель")])
+    if is_admin:
+        kb_list.append([KeyboardButton(text=Buttons.admin)])
     keyboard = ReplyKeyboardMarkup(keyboard=kb_list, resize_keyboard=True)
     return keyboard
 

@@ -3,6 +3,8 @@ import logging
 from aiogram import Bot, Dispatcher
 
 from src.core.settings import settings
+from src.core.db_dependency import async_session_maker
+from src.middleware import DBSessionMiddleware
 
 logging.basicConfig(level=logging.INFO)
 
@@ -22,4 +24,5 @@ async def on_shutdown(dispatcher: Dispatcher, bot: Bot):
 def run_bot():
     dp.startup.register(on_startup)
     dp.shutdown.register(on_shutdown)
+    dp.message.middleware(DBSessionMiddleware(async_session_maker))
     dp.run_polling(bot)
