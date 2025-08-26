@@ -4,14 +4,14 @@ from aiogram.types import Message, CallbackQuery
 
 from src.app import dp
 from src.core.message import AnswerMessage
-from src.keyboards import get_main_bk, get_kb_buy
+from src.keyboards import main_kb, get_kb_buy
 
 
 @dp.message(Command(commands=["start", "menu"]))
 async def start_command(message: Message):
     await message.answer(
         text='Выбери действие',
-        reply_markup=get_main_bk()
+        reply_markup=await main_kb(message.from_user.id)
     )
 
 
