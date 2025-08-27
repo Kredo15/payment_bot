@@ -10,7 +10,7 @@ from src.core.buttons import Buttons
 
 async def main_kb(is_admin: bool):
     kb_list = [
-        [KeyboardButton(text=Buttons.tariff), KeyboardButton(text=Buttons.tariff)],
+        [KeyboardButton(text=Buttons.tariff), KeyboardButton(text=Buttons.profile)],
         [KeyboardButton(text=Buttons.subscription), KeyboardButton(text=Buttons.support)]
     ]
     if is_admin:

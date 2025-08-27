@@ -1,5 +1,5 @@
 from aiogram import F
-from aiogram.filters import Command
+from aiogram.filters import CommandStart
 from aiogram.types import Message, CallbackQuery
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -9,7 +9,7 @@ from src.keyboards import main_kb, get_kb_buy
 from src.utils import check_admin
 
 
-@dp.message(Command(commands=["start", "menu"]))
+@dp.message(CommandStart())
 async def start_command(message: Message, session: AsyncSession):
     is_admin = await check_admin(message.from_user.id, session)
     await message.answer(
