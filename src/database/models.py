@@ -8,6 +8,7 @@ from sqlalchemy import (
     String
 )
 from sqlalchemy.types import JSON, DECIMAL
+from pydantic import EmailStr
 
 from src.database.base_model import Base, intpk, created_at
 from src.database.enums import (
@@ -22,9 +23,8 @@ class UsersOrm(Base):
 
     id: Mapped[intpk]
     telegram_id: Mapped[int] = mapped_column(BigInteger, unique=True, nullable=False)
-    username: Mapped[str | None]
-    first_name: Mapped[str | None]
-    last_name: Mapped[str | None]
+    email: Mapped[EmailStr | None]
+    language: Mapped[str] = mapped_column(default='ru')
     subscription_end_date: Mapped[datetime | None]
     is_active: Mapped[bool] = mapped_column(default=False)
 
