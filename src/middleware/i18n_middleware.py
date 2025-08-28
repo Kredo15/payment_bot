@@ -8,11 +8,10 @@ from src.utils import get_language, set_language
 class UserManager(BaseManager):
     async def get_locale(
             self,
-            session: AsyncSession,
             event_from_user: User
     ) -> str:
         default = event_from_user.language_code or self.default_locale
-        user_lang = await get_language(event_from_user.id, session)
+        user_lang = await get_language(event_from_user.id)
         if user_lang:
             return user_lang
         return default
@@ -20,7 +19,6 @@ class UserManager(BaseManager):
     async def set_locale(
             self,
             locale: str,
-            session: AsyncSession,
             event_from_user: User
     ) -> None:
-        await set_language(event_from_user.id, locale, session)
+        await set_language(event_from_user.id, locale)

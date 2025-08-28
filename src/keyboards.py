@@ -8,13 +8,11 @@ from aiogram.types import (
 from src.core.buttons import Buttons
 
 
-async def main_kb(is_admin: bool):
+async def main_kb():
     kb_list = [
         [KeyboardButton(text=Buttons.tariff), KeyboardButton(text=Buttons.profile)],
         [KeyboardButton(text=Buttons.subscription), KeyboardButton(text=Buttons.support)]
     ]
-    if is_admin:
-        kb_list.append([KeyboardButton(text=Buttons.admin)])
     keyboard = ReplyKeyboardMarkup(keyboard=kb_list, resize_keyboard=True)
     return keyboard
 

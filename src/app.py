@@ -1,6 +1,8 @@
 import logging
 
 from aiogram import Bot, Dispatcher
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ParseMode
 from aiogram_i18n import I18nMiddleware
 from aiogram_i18n.cores.fluent_runtime_core import FluentRuntimeCore
 
@@ -10,7 +12,12 @@ from src.middleware import DBSessionMiddleware, i18n_middleware
 
 logging.basicConfig(level=logging.INFO)
 
-bot = Bot(token=settings.API_KEY_BOT)
+bot = Bot(
+    token=settings.API_KEY_BOT,
+    default=DefaultBotProperties(
+        parse_mode=ParseMode.HTML
+    )
+)
 dp = Dispatcher()
 
 
@@ -28,7 +35,7 @@ def run_bot():
     dp.shutdown.register(on_shutdown)
     i18n = I18nMiddleware(
         core=FluentRuntimeCore(
-            path="locales/{locale}/LC_MESSAGES",
+            path="src/locales/{locale}/LC_MESSAGES",
             # path="locales/{locale}"
         ),
         # передаем наш кастомный менеджер языка из middlewares/i18n_middleware.py

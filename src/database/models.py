@@ -23,7 +23,9 @@ class UsersOrm(Base):
 
     id: Mapped[intpk]
     telegram_id: Mapped[int] = mapped_column(BigInteger, unique=True, nullable=False)
-    email: Mapped[EmailStr | None]
+    email: Mapped[EmailStr] = mapped_column(
+        String, nullable=True
+    )
     language: Mapped[str] = mapped_column(default='ru')
     subscription_end_date: Mapped[datetime | None]
     is_active: Mapped[bool] = mapped_column(default=False)
