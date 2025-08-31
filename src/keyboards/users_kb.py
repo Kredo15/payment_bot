@@ -35,7 +35,7 @@ def kb_profile() -> InlineKeyboardMarkup:
     return keyboard
 
 
-def kb_tariff(session: AsyncSession) -> InlineKeyboardMarkup:
+async def kb_tariff(session: AsyncSession) -> InlineKeyboardMarkup:
     subscriptions = await get_subscriptions(session)
     buttons = [
         [

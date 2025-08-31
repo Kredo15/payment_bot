@@ -23,7 +23,7 @@ async def start_command(message: Message, i18n: I18nContext):
 async def tariff(message: Message, session: AsyncSession):
     await message.answer(
         text='Продукт: Закрытый канал',
-        reply_markup=kb_tariff(session)
+        reply_markup=await kb_tariff(session)
     )
 
 
