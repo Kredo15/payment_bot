@@ -3,7 +3,7 @@ import logging
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.database.models import AdminsOrm, UsersOrm
+from src.database.models import AdminsOrm, UsersOrm, SubscriptionsOrm
 from src.core.db_dependency import get_async_session
 
 logger = logging.getLogger(__name__)
@@ -41,3 +41,11 @@ async def set_language(user_id: int, locale: str) -> None:
             update(UsersOrm).where(UsersOrm.telegram_id == user_id)
             .values(language=locale)
         )
+
+
+async def get_subscriptions(session: AsyncSession):
+    subscriptions = await session.scalar(
+        select(SubscriptionsOrm).where(SubscriptionsOrm.is_active)
+        .order_by(SubscriptionsOrm.duration_days)
+    )
+    return subscriptions.all()

@@ -1,6 +1,5 @@
 from aiogram_i18n.managers import BaseManager
 from aiogram.types.user import User
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.utils import get_language, set_language
 
