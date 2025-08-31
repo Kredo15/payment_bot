@@ -44,7 +44,7 @@ async def set_language(user_id: int, locale: str) -> None:
 
 
 async def get_subscriptions(session: AsyncSession):
-    subscriptions = await session.scalar(
+    subscriptions = await session.scalars(
         select(SubscriptionsOrm).where(SubscriptionsOrm.is_active)
         .order_by(SubscriptionsOrm.duration_days)
     )

@@ -13,12 +13,12 @@ from src.utils import get_subscriptions
 async def main_kb():
     kb_list = [
         [
-            KeyboardButton(text=LazyProxy("tariff_button")),
-            KeyboardButton(text=LazyProxy("profile"))
+            KeyboardButton(text=LazyProxy("tariff-button")),
+            KeyboardButton(text=LazyProxy("profile-button"))
         ],
         [
-            KeyboardButton(text=LazyProxy("subscription_button")),
-            KeyboardButton(text=LazyProxy("support_button"))
+            KeyboardButton(text=LazyProxy("subscription-button")),
+            KeyboardButton(text=LazyProxy("support-button"))
         ]
     ]
     keyboard = ReplyKeyboardMarkup(keyboard=kb_list, resize_keyboard=True)
@@ -27,9 +27,11 @@ async def main_kb():
 
 def kb_profile() -> InlineKeyboardMarkup:
     buttons = [
-        [InlineKeyboardButton(text=LazyProxy("language_button"), callback_data="language")],
-        [InlineKeyboardButton(text=LazyProxy("email_button"), callback_data="email")],
-        [InlineKeyboardButton(text=LazyProxy("time_zone_button"), callback_data="time_zone")],
+        [
+            InlineKeyboardButton(text=LazyProxy("language-button"), callback_data="language"),
+            InlineKeyboardButton(text=LazyProxy("email-button"), callback_data="email")
+        ],
+        [InlineKeyboardButton(text=LazyProxy("time-zone-button"), callback_data="time_zone")],
     ]
     keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
     return keyboard

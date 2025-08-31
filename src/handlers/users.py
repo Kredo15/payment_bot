@@ -19,7 +19,7 @@ async def start_command(message: Message, i18n: I18nContext):
     )
 
 
-@dp.message(F.text == LazyProxy("tariff_button"))
+@dp.message(F.text == LazyProxy("tariff-button"))
 async def tariff(message: Message, session: AsyncSession):
     await message.answer(
         text='Продукт: Закрытый канал',
@@ -27,11 +27,11 @@ async def tariff(message: Message, session: AsyncSession):
     )
 
 
-@dp.message(F.text == LazyProxy("profile_button"))
+@dp.message(F.text == LazyProxy("profile-button"))
 async def profile(message: Message, i18n: I18nContext, session: AsyncSession):
     user_data = await get_user_data(message.from_user.id, session)
     await message.answer(
-        text=i18n.profile(
+        text=i18n.profile_message(
             telegram_id=message.from_user.id,
             time_zone='UTC',
             email='Empty',
