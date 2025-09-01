@@ -37,7 +37,7 @@ async def get_language(user_id: int) -> str | None:
 
 async def set_language(user_id: int, locale: str) -> None:
     async with get_async_session() as session:
-        await session.scalar(
+        await session.execute(
             update(UsersOrm).where(UsersOrm.telegram_id == user_id)
             .values(language=locale)
         )
