@@ -36,7 +36,7 @@ MANIFEST
 pip-log.txt
 pip-delete-this-directory.txt
 
-# Unit test / coverage reports
+# Unit tests / coverage reports
 htmlcov/
 .tox/
 .nox/
@@ -138,6 +138,7 @@ celerybeat.pid
 .env
 .envrc
 .venv
+.test.env
 env/
 venv/
 ENV/
@@ -206,3 +207,4 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 .idea
+!/.test.env

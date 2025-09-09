@@ -25,6 +25,7 @@ class DBSettings(BaseSettings):
 
 
 class Settings(BaseSettings):
+    MODE: str
     API_KEY_BOT: str
     ADMIN: int
 

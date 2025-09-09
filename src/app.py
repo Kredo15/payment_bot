@@ -3,12 +3,9 @@ import logging
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from aiogram_i18n import I18nMiddleware
-from aiogram_i18n.cores.fluent_runtime_core import FluentRuntimeCore
 
 from src.core.settings import settings
-from src.core.db_dependency import async_session_maker
-from src.middleware import DBSessionMiddleware, i18n_middleware
+
 
 logging.basicConfig(level=logging.INFO)
 
@@ -31,17 +28,10 @@ async def on_shutdown(dispatcher: Dispatcher, bot: Bot):
 
 
 def run_bot():
+    from src.middleware import setup_middleware
+    from src.handlers import setup_routers
     dp.startup.register(on_startup)
     dp.shutdown.register(on_shutdown)
-    i18n = I18nMiddleware(
-        core=FluentRuntimeCore(
-            path="src/locales/{locale}/LC_MESSAGES",
-            # path="locales/{locale}"
-        ),
-        # передаем наш кастомный менеджер языка из middlewares/i18n_middleware.py
-        manager=i18n_middleware.UserManager(),
-        default_locale="ru"
-    )
-    dp.message.middleware(DBSessionMiddleware(async_session_maker))
-    i18n.setup(dispatcher=dp)
+    setup_middleware(dp)
+    setup_routers(dp)
     dp.run_polling(bot)

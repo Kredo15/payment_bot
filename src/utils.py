@@ -1,6 +1,6 @@
 import logging
 
-from sqlalchemy import select, update
+from sqlalchemy import select, update, insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.database.models import AdminsOrm, UsersOrm, SubscriptionsOrm
@@ -16,6 +16,17 @@ async def check_admin(user_id: int) -> bool:
             admins = [admin.telegram_id for admin in admins.all()]
             return user_id in admins
     return False
+
+
+async def check_user(user_id: int, session: AsyncSession):
+    user = await session.scalar(
+        select(UsersOrm).where(UsersOrm.telegram_id == user_id)
+    )
+    if not user:
+        await session.execute(
+            insert(UsersOrm).values(telegram_id=user_id)
+        )
+        await session.commit()
 
 
 async def get_user_data(user_id: int, session: AsyncSession) -> str:
