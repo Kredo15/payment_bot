@@ -63,3 +63,9 @@ def core() -> BaseCore[Any]:
     from aiogram_i18n.cores import FluentCompileCore
 
     return FluentCompileCore(path=LOCALES, use_isolating=False)
+
+
+@pytest_asyncio.fixture(scope='session')
+async def async_test_session():
+    async with async_session_maker() as session:
+        yield session

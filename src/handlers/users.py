@@ -4,7 +4,6 @@ from aiogram.filters import CommandStart
 from sqlalchemy.ext.asyncio import AsyncSession
 from aiogram_i18n import I18nContext, LazyProxy
 
-from src.app import bot
 from src.keyboards.users_kb import kb_tariff
 from src.utils import get_user_data, check_user
 from src.keyboards.users_kb import (
@@ -59,14 +58,13 @@ async def _switch_language(message: Message, i18n: I18nContext, locale_code: str
     await i18n.set_locale(locale_code)
     await message.answer(
         i18n.get("lang_is_switched"),
-        reply_markup=await main_kb()
+        reply_markup=main_kb()
     )
 
 
 @router.callback_query(F.data == "language")
 async def choose_language(callback: CallbackQuery, i18n: I18nContext):
-    await bot.delete_message(chat_id=callback.message.chat.id,
-                             message_id=callback.message.message_id)
+    await callback.message.delete()
     await callback.message.answer(
         text=i18n.choose_language(),
         reply_markup=kb_language()
@@ -74,14 +72,12 @@ async def choose_language(callback: CallbackQuery, i18n: I18nContext):
 
 
 @router.callback_query(F.data == "language_ru")
-async def choose_language(callback: CallbackQuery, i18n: I18nContext):
-    await bot.delete_message(chat_id=callback.message.chat.id,
-                             message_id=callback.message.message_id)
+async def choose_language_ru(callback: CallbackQuery, i18n: I18nContext):
+    await callback.message.delete()
     await _switch_language(callback.message, i18n, "ru")
 
 
 @router.callback_query(F.data == "language_en")
-async def choose_language(callback: CallbackQuery, i18n: I18nContext):
-    await bot.delete_message(chat_id=callback.message.chat.id,
-                             message_id=callback.message.message_id)
+async def choose_language_en(callback: CallbackQuery, i18n: I18nContext):
+    await callback.message.delete()
     await _switch_language(callback.message, i18n, "en")

@@ -67,12 +67,12 @@ def get_chat(
     )
 
 
-def get_callback_query(data: str | CallbackData, from_user=TEST_USER, message=None):
+def get_callback_query(data: str | CallbackData, from_user=TEST_USER):
     return CallbackQuery(
         id="test",
         from_user=from_user,
         chat_instance="test",
-        message=message or TEST_MESSAGE,
+        message=get_message('test'),
         data=data,
     )
 

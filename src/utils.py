@@ -26,6 +26,7 @@ async def check_user(user_id: int, session: AsyncSession):
         await session.execute(
             insert(UsersOrm).values(telegram_id=user_id)
         )
+        await session.commit()
 
 
 async def get_user_data(user_id: int, session: AsyncSession) -> str:
