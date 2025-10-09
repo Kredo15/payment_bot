@@ -28,6 +28,7 @@ class UsersOrm(Base):
     )
     language: Mapped[str] = mapped_column(default='ru')
     subscription_end_date: Mapped[datetime | None]
+    referrer_id: Mapped[int] = mapped_column(ForeignKey('users.id'), nullable=True)
     is_active: Mapped[bool] = mapped_column(default=True)
 
     payment: Mapped[list["PaymentsOrm"]] = relationship(
@@ -55,7 +56,6 @@ class PaymentsOrm(Base):
     currency: Mapped[str] = mapped_column(String(10), default='RUB')
     provider_payment_id: Mapped[str] = mapped_column(unique=True)
     status: Mapped[StatusPaymentEnum] = mapped_column(default=StatusPaymentEnum.pending)
-    subscription_period: Mapped[int]
     created_at: Mapped[created_at]
 
     user: Mapped["UsersOrm"] = relationship("UsersOrm", back_populates="payment")
@@ -102,9 +102,15 @@ class SubscriptionHistoryOrm(Base):
     )
     created_at: Mapped[created_at]
 
-    user: Mapped["UsersOrm"] = relationship("UsersOrm", back_populates="history")
-    subscription: Mapped["SubscriptionsOrm"] = relationship("SubscriptionsOrm", back_populates="history")
-    payment: Mapped["PaymentsOrm"] = relationship("PaymentsOrm", back_populates="history")
+    user: Mapped["UsersOrm"] = relationship(
+        "UsersOrm", back_populates="history"
+    )
+    subscription: Mapped["SubscriptionsOrm"] = relationship(
+        "SubscriptionsOrm", back_populates="history"
+    )
+    payment: Mapped["PaymentsOrm"] = relationship(
+        "PaymentsOrm", back_populates="history"
+    )
 
 
 class AdminsOrm(Base):
