@@ -1,35 +1,20 @@
 from aiogram import F, Router
 from aiogram.types import Message, CallbackQuery
-from aiogram.filters import CommandStart
 from sqlalchemy.ext.asyncio import AsyncSession
 from aiogram_i18n import I18nContext, LazyProxy
 
-from src.keyboards.users_kb import kb_tariff
-from src.utils import get_user_data, check_user
-from src.keyboards.users_kb import (
-    main_kb,
-    kb_profile,
-    kb_language
-)
+from src.cruds.user_crud import get_user_data
+from src.keyboards.users_kb import main_kb
+from src.keyboards.profile_kb import kb_profile, kb_language
 
 router = Router()
 
 
-@router.message(CommandStart())
-async def start_command(message: Message, i18n: I18nContext, session: AsyncSession):
-    await check_user(message.from_user.id, session)
-    name = message.from_user.full_name
+async def _switch_language(message: Message, i18n: I18nContext, locale_code: str):
+    await i18n.set_locale(locale_code)
     await message.answer(
-        text=i18n.hello(user=name),
+        i18n.get("lang_is_switched"),
         reply_markup=main_kb()
-    )
-
-
-@router.message(F.text == LazyProxy("tariff_button"))
-async def tariff(message: Message, i18n: I18nContext, session: AsyncSession):
-    await message.answer(
-        text=i18n.tariff_message(),
-        reply_markup=await kb_tariff(session)
     )
 
 
@@ -40,25 +25,10 @@ async def profile(message: Message, i18n: I18nContext, session: AsyncSession):
         text=i18n.profile_message(
             telegram_id=message.from_user.id,
             time_zone='UTC',
-            email='Empty',
-            language=i18n.locale
+            email=user_data.get("email") or 'Empty',
+            language=user_data.get("language") or i18n.locale
         ),
         reply_markup=kb_profile()
-    )
-
-
-@router.message(F.text == LazyProxy("support_button"))
-async def support(message: Message, i18n: I18nContext):
-    await message.answer(
-        text=i18n.support_message()
-    )
-
-
-async def _switch_language(message: Message, i18n: I18nContext, locale_code: str):
-    await i18n.set_locale(locale_code)
-    await message.answer(
-        i18n.get("lang_is_switched"),
-        reply_markup=main_kb()
     )
 
 

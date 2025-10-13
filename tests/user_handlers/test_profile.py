@@ -10,25 +10,24 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from tests.utils.mocked_bot import MockedBot
 from tests.utils.updates import get_message, get_update, get_user
-from tests.utils.for_test import create_test_subscriptions
+from tests.utils.for_test import create_test_user
 
 
 @pytest.mark.parametrize(
     "language_code",
     [
-        "ru",
-        "en"
+        "en",
+        "ru"
     ],
 )
 @pytest.mark.asyncio
-async def test_tariff_command(
+async def test_profile_command(
         bot: MockedBot,
         dispatcher: Dispatcher,
         core: BaseCore[Any],
         async_test_session: AsyncSession,
         language_code: str
 ):
-    await create_test_subscriptions(async_test_session)
     bot.add_result_for(
         method=SendMessage,
         ok=True
@@ -38,6 +37,7 @@ async def test_tariff_command(
     user = get_user(language_code)
     message = get_message(button, from_user=user)
     update = get_update(message)
+    await create_test_user(user.id, language_code, async_test_session)
     result = await dispatcher.feed_update(
         bot=bot,
         update=update

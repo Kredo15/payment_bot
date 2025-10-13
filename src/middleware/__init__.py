@@ -24,4 +24,5 @@ def setup_middleware(dp: Dispatcher) -> None:
         default_locale="ru"
     )
     dp.message.middleware(db_session.DBSessionMiddleware(async_session_maker))
+    dp.callback_query.middleware(db_session.DBSessionMiddleware(async_session_maker))
     i18n.setup(dispatcher=dp)

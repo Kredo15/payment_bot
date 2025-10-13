@@ -1,7 +1,7 @@
 from aiogram_i18n.managers import BaseManager
 from aiogram.types.user import User
 
-from src.utils import get_language, set_language
+from src.cruds.user_crud import get_language, set_language
 
 
 class UserManager(BaseManager):
