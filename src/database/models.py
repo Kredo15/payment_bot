@@ -19,17 +19,25 @@ from src.database.enums import (
 
 
 class UsersOrm(Base):
+    """Представляет пользователя бота"""
     __tablename__ = "users"
 
     id: Mapped[intpk]
     telegram_id: Mapped[int] = mapped_column(BigInteger, unique=True, nullable=False)
+    first_name: Mapped[str] = mapped_column(nullable=True)
+    username: Mapped[str] = mapped_column(nullable=True)
     email: Mapped[EmailStr] = mapped_column(
         String, nullable=True
     )
     language: Mapped[str] = mapped_column(default='ru')
     subscription_end_date: Mapped[datetime | None]
+    referrer_id: Mapped[int] = mapped_column(ForeignKey('users.id'), nullable=True)
     is_active: Mapped[bool] = mapped_column(default=True)
+    created_at: Mapped[created_at]
 
+    activities: Mapped[list["UserActivity"]] = relationship(
+        back_populates="user", cascade="all, delete-orphan"
+    )
     payment: Mapped[list["PaymentsOrm"]] = relationship(
        back_populates='user', cascade='all, delete-orphan'
     )
@@ -44,7 +52,23 @@ class UsersOrm(Base):
     )
 
 
+class UserActivity(Base):
+    """
+    Фиксирует временные метки активности пользователя.
+    """
+    __tablename__ = 'user_activity'
+
+    id: Mapped[intpk]
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.telegram_id", ondelete="CASCADE")
+    )
+    activity_date: Mapped[created_at]
+
+    user: Mapped["UsersOrm"] = relationship("UsersOrm", back_populates="activities")
+
+
 class PaymentsOrm(Base):
+    """Сохраненные платежи"""
     __tablename__ = "payments"
 
     id: Mapped[intpk]
@@ -55,7 +79,6 @@ class PaymentsOrm(Base):
     currency: Mapped[str] = mapped_column(String(10), default='RUB')
     provider_payment_id: Mapped[str] = mapped_column(unique=True)
     status: Mapped[StatusPaymentEnum] = mapped_column(default=StatusPaymentEnum.pending)
-    subscription_period: Mapped[int]
     created_at: Mapped[created_at]
 
     user: Mapped["UsersOrm"] = relationship("UsersOrm", back_populates="payment")
@@ -65,6 +88,7 @@ class PaymentsOrm(Base):
 
 
 class SubscriptionsOrm(Base):
+    """Модель подписок"""
     __tablename__ = "subscriptions"
 
     id: Mapped[intpk]
@@ -83,6 +107,7 @@ class SubscriptionsOrm(Base):
 
 
 class SubscriptionHistoryOrm(Base):
+    """История оплаты подписок"""
     __tablename__ = "subscription_history"
 
     id: Mapped[intpk]
@@ -102,9 +127,15 @@ class SubscriptionHistoryOrm(Base):
     )
     created_at: Mapped[created_at]
 
-    user: Mapped["UsersOrm"] = relationship("UsersOrm", back_populates="history")
-    subscription: Mapped["SubscriptionsOrm"] = relationship("SubscriptionsOrm", back_populates="history")
-    payment: Mapped["PaymentsOrm"] = relationship("PaymentsOrm", back_populates="history")
+    user: Mapped["UsersOrm"] = relationship(
+        "UsersOrm", back_populates="history"
+    )
+    subscription: Mapped["SubscriptionsOrm"] = relationship(
+        "SubscriptionsOrm", back_populates="history"
+    )
+    payment: Mapped["PaymentsOrm"] = relationship(
+        "PaymentsOrm", back_populates="history"
+    )
 
 
 class AdminsOrm(Base):

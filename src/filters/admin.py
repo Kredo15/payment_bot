@@ -2,7 +2,7 @@ from aiogram.filters import BaseFilter
 from aiogram.types import Message
 
 from src.core.settings import settings
-from src.utils import check_admin
+from service.utils import check_admin
 
 
 class IsSuperAdmin(BaseFilter):
