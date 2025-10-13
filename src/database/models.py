@@ -28,7 +28,7 @@ class UsersOrm(Base):
     )
     language: Mapped[str] = mapped_column(default='ru')
     subscription_end_date: Mapped[datetime | None]
-    is_active: Mapped[bool] = mapped_column(default=False)
+    is_active: Mapped[bool] = mapped_column(default=True)
 
     payment: Mapped[list["PaymentsOrm"]] = relationship(
        back_populates='user', cascade='all, delete-orphan'

@@ -10,7 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.utils import get_subscriptions
 
 
-async def main_kb():
+def main_kb():
     kb_list = [
         [
             KeyboardButton(text=LazyProxy("tariff_button")),
