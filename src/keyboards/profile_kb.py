@@ -8,10 +8,13 @@ from aiogram_i18n.types import (
 def kb_profile() -> InlineKeyboardMarkup:
     buttons = [
         [
-            InlineKeyboardButton(text=LazyProxy("language_button"), callback_data="language"),
+            InlineKeyboardButton(text=LazyProxy("referral_button"), callback_data="referral_info"),
             InlineKeyboardButton(text=LazyProxy("email_button"), callback_data="email")
         ],
-        [InlineKeyboardButton(text=LazyProxy("time_zone_button"), callback_data="time_zone")],
+        [
+            InlineKeyboardButton(text=LazyProxy("language_button"), callback_data="language"),
+            InlineKeyboardButton(text=LazyProxy("time_zone_button"), callback_data="time_zone")
+        ],
     ]
     keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
     return keyboard

@@ -1,7 +1,7 @@
 from sqlalchemy import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from database import SubscriptionsOrm
+from database import SubscriptionsOrm, UsersOrm
 
 
 async def create_test_subscriptions(
@@ -25,5 +25,17 @@ async def create_test_subscriptions(
                     }
                 ]
             )
+        )
+        await async_session.commit()
+
+
+async def create_test_user(
+        user_id: int,
+        language_code: str,
+        async_session: AsyncSession
+):
+    async with async_session:
+        await async_session.execute(
+            insert(UsersOrm).values(telegram_id=user_id, language=language_code)
         )
         await async_session.commit()

@@ -12,7 +12,7 @@ def main_kb():
             KeyboardButton(text=LazyProxy("profile_button"))
         ],
         [
-            KeyboardButton(text=LazyProxy("subscription_button")),
+            KeyboardButton(text=LazyProxy("my_subscription_button")),
             KeyboardButton(text=LazyProxy("support_button"))
         ]
     ]

@@ -43,6 +43,22 @@ subscription_message =
     - <i>Period</i>: { $duration_days } days
     - <i>Price</i>: { $price } { $currency }
 
+invite_friend_message =
+        "👥 <b>Invite a friend and get a bonus!</b>"
+
+        "Send this link to your friends, and you'll get a nice bonus for each new user!"
+
+        f"{ref_link}"
+
+referral_list =
+    "<b>Your referrals</b>"
+
+referral_all =
+    "All { $all } people"
+
+not_referral =
+    "You don't have any referrals yet. Invite your friends and get a bonus!"
+
 payment_method =
     Product: Private chanel
 
@@ -74,10 +90,13 @@ lang_is_switched = Display language is { en_lang }.
 #Buttons
 tariff_button = 💳 Tariff plans
 profile_button = 👤 Profile
-subscription_button = 🔑 My subscription
+my_subscription_button = 🔑 My subscription
 support_button = 🤝 Support
 admin_button = ⚙️ Admin panel
 
+referral_button = 🌐 Referral program
+invite_friend = 👥 Invite a friend
+my_referral_button = 📊 My referral
 language_button = 🌍 Language
 email_button = 📬 Email
 time_zone_button = 🌐 Time zone

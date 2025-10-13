@@ -5,7 +5,8 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from aiogram import Dispatcher, Router
 
-from . import admins, users, payments, subscription, profile
+from . import admins
+from .user import payments, profile, subscription, start
 
 logger = logging.getLogger("handlers")
 

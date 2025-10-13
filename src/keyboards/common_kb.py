@@ -14,3 +14,13 @@ def kb_chanel():
     ]
     keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
     return keyboard
+
+
+def back_to_profile():
+    buttons = [
+        [
+            InlineKeyboardButton(text=LazyProxy("back"), callback_data="profile_button"),
+        ]
+    ]
+    keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
+    return keyboard
