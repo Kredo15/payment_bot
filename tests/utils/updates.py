@@ -10,7 +10,7 @@ TEST_USER = User(
     last_name="Bot",
     username="testbot",
     language_code="ru",
-    is_premium=True
+    is_premium=True,
 )
 
 TEST_CHAT = Chat(
@@ -32,7 +32,7 @@ def get_user(language_code: str):
         last_name="Bot",
         username="testbot",
         language_code=language_code,
-        is_premium=True
+        is_premium=True,
     )
 
 
@@ -43,17 +43,17 @@ def get_message(text: str, chat=TEST_CHAT, from_user=TEST_USER):
         chat=chat,
         from_user=from_user,
         sender_chat=TEST_CHAT,
-        text=text
+        text=text,
     )
 
 
 def get_chat(
-        id: int = None,
-        type: str = "private",
-        title: str = "TEST_TITLE",
-        username: str = TEST_CHAT.username,
-        *args,
-        **kwargs
+    id: int = None,
+    type: str = "private",
+    title: str = "TEST_TITLE",
+    username: str = TEST_CHAT.username,
+    *args,
+    **kwargs,
 ) -> Chat:
     return Chat(
         id=id,
@@ -63,7 +63,7 @@ def get_chat(
         first_name=TEST_USER.first_name,
         last_name=TEST_USER.last_name,
         *args,
-        **kwargs
+        **kwargs,
     )
 
 
@@ -72,14 +72,10 @@ def get_callback_query(data: str | CallbackData, from_user=TEST_USER):
         id="test",
         from_user=from_user,
         chat_instance="test",
-        message=get_message('test'),
+        message=get_message("test"),
         data=data,
     )
 
 
 def get_update(message: Message = None, callback_query: CallbackQuery = None):
-    return Update(
-        update_id=123,
-        message=message,
-        callback_query=callback_query
-    )
+    return Update(update_id=123, message=message, callback_query=callback_query)

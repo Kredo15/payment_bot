@@ -17,11 +17,10 @@ logger = logging.getLogger("middleware")
 def setup_middleware(dp: Dispatcher) -> None:
     i18n = I18nMiddleware(
         core=FluentRuntimeCore(
-            path="locales/{locale}/LC_MESSAGES",
-            raise_key_error=False
+            path="locales/{locale}/LC_MESSAGES", raise_key_error=False
         ),
         manager=i18n_middleware.UserManager(),
-        default_locale="ru"
+        default_locale="ru",
     )
     dp.message.middleware(db_session.DBSessionMiddleware(async_session_maker))
     dp.callback_query.middleware(db_session.DBSessionMiddleware(async_session_maker))

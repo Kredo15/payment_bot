@@ -1,8 +1,5 @@
 from aiogram_i18n import LazyProxy
-from aiogram_i18n.types import (
-    InlineKeyboardMarkup,
-    InlineKeyboardButton
-)
+from aiogram_i18n.types import InlineKeyboardMarkup, InlineKeyboardButton
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.cruds.subscription_crud import get_subscriptions
@@ -14,12 +11,13 @@ async def kb_tariff(session: AsyncSession) -> InlineKeyboardMarkup:
         [
             InlineKeyboardButton(
                 text=LazyProxy(
-                    'subscription',
+                    "subscription",
                     duration_days=subscription.duration_days,
                     price=subscription.price,
-                    currency=subscription.currency
+                    currency=subscription.currency,
                 ),
-                callback_data=f"subscription_{subscription.name}")
+                callback_data=f"subscription_{subscription.name}",
+            )
         ]
         for subscription in subscriptions
     ]
@@ -32,10 +30,7 @@ def kb_payment():
         [
             InlineKeyboardButton(text=LazyProxy("pay"), callback_data="pay"),
         ],
-        [
-            InlineKeyboardButton(text=LazyProxy("back"), callback_data="tariff_button")
-        ]
+        [InlineKeyboardButton(text=LazyProxy("back"), callback_data="tariff_button")],
     ]
     keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
     return keyboard
-

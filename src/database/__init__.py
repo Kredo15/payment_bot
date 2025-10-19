@@ -5,11 +5,15 @@ from src.database.models import (
     SubscriptionsOrm,
     SubscriptionHistoryOrm,
     AdminsOrm,
-    ActivityLogsOrm
+    ActivityLogsOrm,
 )
 
 __all__ = (
-    "Base", "UsersOrm", "PaymentsOrm",
-    "SubscriptionsOrm", "SubscriptionHistoryOrm",
-    "AdminsOrm", "ActivityLogsOrm"
+    "Base",
+    "UsersOrm",
+    "PaymentsOrm",
+    "SubscriptionsOrm",
+    "SubscriptionHistoryOrm",
+    "AdminsOrm",
+    "ActivityLogsOrm",
 )

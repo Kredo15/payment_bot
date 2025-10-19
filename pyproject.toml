@@ -24,6 +24,7 @@ dependencies = [
     "aiocryptopay (>=0.4.8,<0.5.0)",
     "redis (>=6.4.0,<7.0.0)",
     "yookassa (>=3.7.1,<4.0.0)",
+    "black (>=25.9.0,<26.0.0)",
 ]
 
 

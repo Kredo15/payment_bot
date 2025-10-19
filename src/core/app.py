@@ -13,10 +13,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 bot = Bot(
-    token=settings.API_KEY_BOT,
-    default=DefaultBotProperties(
-        parse_mode=ParseMode.HTML
-    )
+    token=settings.API_KEY_BOT, default=DefaultBotProperties(parse_mode=ParseMode.HTML)
 )
 storage = RedisStorage.from_url(settings.redis_settings.redis_url)
 dp = Dispatcher(storage=storage)
@@ -34,6 +31,7 @@ async def on_shutdown(dispatcher: Dispatcher, bot: Bot):
 async def run_bot():
     from src.middleware import setup_middleware
     from src.handlers import setup_routers
+
     dp.startup.register(on_startup)
     dp.shutdown.register(on_shutdown)
     setup_middleware(dp)

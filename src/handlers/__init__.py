@@ -11,10 +11,10 @@ from .user import payments, profile, subscription, start
 logger = logging.getLogger("handlers")
 
 all_routers: list[Router] = [
-    users.router,
+    start.router,
     payments.router,
     subscription.router,
-    profile.router
+    profile.router,
 ]
 
 

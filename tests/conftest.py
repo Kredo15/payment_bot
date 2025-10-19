@@ -19,7 +19,9 @@ from src.core.db_dependency import async_session_maker
 
 
 LOCALES = str(
-    Path(__file__).parent.parent.joinpath("locales", "{locale}", "LC_MESSAGES").absolute()
+    Path(__file__)
+    .parent.parent.joinpath("locales", "{locale}", "LC_MESSAGES")
+    .absolute()
 )
 
 
@@ -42,15 +44,10 @@ async def dispatcher():
     storage = MemoryStorage()
     dp = Dispatcher(storage=storage)
 
-    core = FluentRuntimeCore(
-            path=LOCALES,
-            use_isolating=False
-        )
+    core = FluentRuntimeCore(path=LOCALES, use_isolating=False)
     await core.startup()
     i18n_mw = I18nMiddleware(
-        core=core,
-        manager=i18n_middleware.UserManager(),
-        default_locale="ru"
+        core=core, manager=i18n_middleware.UserManager(), default_locale="ru"
     )
     i18n_mw.setup(dispatcher=dp)
     dp.message.middleware(db_session.DBSessionMiddleware(async_session_maker))
@@ -65,7 +62,7 @@ def core() -> BaseCore[Any]:
     return FluentCompileCore(path=LOCALES, use_isolating=False)
 
 
-@pytest_asyncio.fixture(scope='session')
+@pytest_asyncio.fixture(scope="session")
 async def async_test_session():
     async with async_session_maker() as session:
         yield session

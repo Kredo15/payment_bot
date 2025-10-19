@@ -14,17 +14,13 @@ router = Router()
 @router.message(F.text == LazyProxy("tariff_button"))
 async def tariff(message: Message, i18n: I18nContext, session: AsyncSession):
     await message.answer(
-        text=i18n.tariff_message(),
-        reply_markup=await kb_tariff(session)
+        text=i18n.tariff_message(), reply_markup=await kb_tariff(session)
     )
 
 
 @router.callback_query(F.data.startswith("subscription_"))
 async def choose_subscription(
-        callback: CallbackQuery,
-        i18n: I18nContext,
-        session: AsyncSession,
-        state: FSMContext
+    callback: CallbackQuery, i18n: I18nContext, session: AsyncSession, state: FSMContext
 ):
     await callback.message.delete()
     name = callback.data.replace("subscription_", "")
@@ -35,7 +31,7 @@ async def choose_subscription(
             name=subscription_data.name,
             duration_days=subscription_data.duration_days,
             price=subscription_data.price,
-            currency=subscription_data.currency
+            currency=subscription_data.currency,
         ),
-        reply_markup=kb_payment()
+        reply_markup=kb_payment(),
     )

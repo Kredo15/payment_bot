@@ -21,26 +21,19 @@ from src.keyboards.users_kb import main_kb
 )
 @pytest.mark.asyncio
 async def test_start_command(
-        bot: MockedBot,
-        dispatcher: Dispatcher,
-        core: BaseCore[Any],
-        language_code: str
+    bot: MockedBot, dispatcher: Dispatcher, core: BaseCore[Any], language_code: str
 ):
-    bot.add_result_for(
-        method=SendMessage,
-        ok=True
-    )
+    bot.add_result_for(method=SendMessage, ok=True)
     user = get_user(language_code)
     message = get_message("/start", from_user=user)
     update = get_update(message)
     # Обрабатываем сообщение
-    result = await dispatcher.feed_update(
-        bot=bot,
-        update=update
-    )
+    result = await dispatcher.feed_update(bot=bot, update=update)
     assert result is not UNHANDLED
     outgoing_message: TelegramMethod[TelegramType] = bot.get_request()
     assert isinstance(outgoing_message, SendMessage)
     await core.startup()
-    assert outgoing_message.text == core.get("hello", language_code, user=update.message.from_user.full_name)
+    assert outgoing_message.text == core.get(
+        "hello", language_code, user=update.message.from_user.full_name
+    )
     assert outgoing_message.reply_markup == main_kb()

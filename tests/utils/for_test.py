@@ -4,9 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from database import SubscriptionsOrm, UsersOrm
 
 
-async def create_test_subscriptions(
-        async_session: AsyncSession
-):
+async def create_test_subscriptions(async_session: AsyncSession):
     async with async_session:
         await async_session.execute(
             insert(SubscriptionsOrm).values(
@@ -15,14 +13,14 @@ async def create_test_subscriptions(
                         "name": "30 дней",
                         "price": 100,
                         "currency": "RUB",
-                        "duration_days": 30
+                        "duration_days": 30,
                     },
                     {
                         "name": "90 дней",
                         "price": 250,
                         "currency": "RUB",
-                        "duration_days": 90
-                    }
+                        "duration_days": 90,
+                    },
                 ]
             )
         )
@@ -30,9 +28,7 @@ async def create_test_subscriptions(
 
 
 async def create_test_user(
-        user_id: int,
-        language_code: str,
-        async_session: AsyncSession
+    user_id: int, language_code: str, async_session: AsyncSession
 ):
     async with async_session:
         await async_session.execute(

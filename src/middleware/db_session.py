@@ -15,7 +15,7 @@ class DBSessionMiddleware(BaseMiddleware):
         self,
         handler: Callable[[Message, dict[str, Any]], Awaitable[Any]],
         event: Message,
-        data: dict[str, Any]
+        data: dict[str, Any],
     ) -> Any:
         async with self._session_pool() as session:
             data["session"] = session

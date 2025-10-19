@@ -12,10 +12,7 @@ router = Router()
 
 @router.callback_query(F.data == "referral_info")
 async def referral_info_handler(callback: CallbackQuery, i18n: I18nContext):
-    await callback.message.answer(
-        text=i18n.referral_info(),
-        reply_markup=referral()
-    )
+    await callback.message.answer(text=i18n.referral_info(), reply_markup=referral())
 
 
 @router.callback_query(F.data == "invite_friend")
@@ -25,12 +22,14 @@ async def invite_friend_command(callback: CallbackQuery, i18n: I18nContext):
     ref_link = get_ref_link(bot_username, user_id)
     await callback.message.answer(
         text=i18n.invite_friend_message(ref_link=ref_link),
-        reply_markup=back_to_referral_info()
+        reply_markup=back_to_referral_info(),
     )
 
 
 @router.callback_query(F.data == "my_referrals")
-async def my_referrals(callback: CallbackQuery, i18n: I18nContext, session: AsyncSession):
+async def my_referrals(
+    callback: CallbackQuery, i18n: I18nContext, session: AsyncSession
+):
     """Показывает пользователю список или статистику его рефералов."""
     user_id = callback.from_user.id
     referrals = get_referrals(user_id, session)

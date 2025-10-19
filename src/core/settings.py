@@ -14,14 +14,18 @@ class DBSettings(BaseSettings):
 
     @property
     def database_url(self):
-        return f"postgresql+asyncpg:" \
-               f"//{self.DB_USER}:" \
-               f"{self.DB_PASS.get_secret_value()}" \
-               f"@{self.DB_HOST}:" \
-               f"{self.DB_PORT}/" \
-               f"{self.DB_NAME}"
+        return (
+            f"postgresql+asyncpg:"
+            f"//{self.DB_USER}:"
+            f"{self.DB_PASS.get_secret_value()}"
+            f"@{self.DB_HOST}:"
+            f"{self.DB_PORT}/"
+            f"{self.DB_NAME}"
+        )
 
-    model_config = SettingsConfigDict(env_file=f"{BASE_DIR}/.env", env_file_encoding="utf8", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=f"{BASE_DIR}/.env", env_file_encoding="utf8", extra="ignore"
+    )
 
 
 class RedisSettings(BaseSettings):
@@ -29,7 +33,9 @@ class RedisSettings(BaseSettings):
     REDIS_PORT: int
     REDIS_DB: int
 
-    model_config = SettingsConfigDict(env_file=f"{BASE_DIR}/.env", env_file_encoding="utf8", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=f"{BASE_DIR}/.env", env_file_encoding="utf8", extra="ignore"
+    )
 
     @property
     def redis_url(self):
@@ -40,7 +46,9 @@ class CryptoSettings(BaseSettings):
     CRYPTO_PAY_TOKEN: str
     ACCEPTED_ASSETS: str
 
-    model_config = SettingsConfigDict(env_file=f"{BASE_DIR}/.env", env_file_encoding="utf8", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=f"{BASE_DIR}/.env", env_file_encoding="utf8", extra="ignore"
+    )
 
 
 class YoomoneySettings(BaseSettings):
@@ -49,7 +57,9 @@ class YoomoneySettings(BaseSettings):
     YOOMONEY_ACCOUNT_ID: str
     YOOMONEY_SECRET_KEY: str
 
-    model_config = SettingsConfigDict(env_file=f"{BASE_DIR}/.env", env_file_encoding="utf8", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=f"{BASE_DIR}/.env", env_file_encoding="utf8", extra="ignore"
+    )
 
 
 class Settings(BaseSettings):
@@ -64,7 +74,9 @@ class Settings(BaseSettings):
     crypto_settings: CryptoSettings = CryptoSettings()
     yoomoney_settings: YoomoneySettings = YoomoneySettings()
 
-    model_config = SettingsConfigDict(env_file=f"{BASE_DIR}/.env", env_file_encoding="utf8", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=f"{BASE_DIR}/.env", env_file_encoding="utf8", extra="ignore"
+    )
 
 
 settings = Settings()
