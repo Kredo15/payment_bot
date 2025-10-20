@@ -28,7 +28,8 @@ def kb_language():
         [
             InlineKeyboardButton(text="🇷🇺 Русский", callback_data="language_ru"),
             InlineKeyboardButton(text="🇺🇸 English", callback_data="language_en"),
-        ]
+        ],
+        [InlineKeyboardButton(text=LazyProxy("back"), callback_data="profile_button")],
     ]
     keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
     return keyboard

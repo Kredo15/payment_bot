@@ -1,6 +1,8 @@
 import logging
 
-from src.core.state import PaymentState
+from email_validator import validate_email, EmailNotValidError
+
+from src.state.payment import PaymentState
 
 logger = logging.getLogger(__name__)
 
@@ -40,3 +42,11 @@ def get_referral(message) -> None | int:
         except Exception:
             pass
     return None
+
+
+def valid_email(email: str) -> bool:
+    try:
+        validate_email(email, check_deliverability=False)
+        return True
+    except EmailNotValidError:
+        return False

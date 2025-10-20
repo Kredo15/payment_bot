@@ -27,7 +27,7 @@ async def check_user(
     username: str,
     referral_id: int,
     session: AsyncSession,
-):
+) -> None:
     user = await session.scalar(select(UsersOrm).where(UsersOrm.telegram_id == user_id))
     if not user:
         await session.execute(
@@ -73,7 +73,14 @@ async def set_language(user_id: int, locale: str) -> None:
 
 
 async def get_referrals(user_id: int, session: AsyncSession) -> Sequence:
-    result = await session.scalars(
+    result = await session.execute(
         select(UsersOrm).where(UsersOrm.referrer_id == user_id)
     )
-    return result.all()
+    return result.scalars().all()
+
+
+async def update_email(user_id: int, email: str, session: AsyncSession) -> None:
+    await session.execute(
+        update(UsersOrm).where(UsersOrm.telegram_id == user_id).values(email=email)
+    )
+    await session.commit()

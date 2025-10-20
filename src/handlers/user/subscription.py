@@ -12,8 +12,17 @@ router = Router()
 
 
 @router.message(F.text == LazyProxy("tariff_button"))
-async def tariff(message: Message, i18n: I18nContext, session: AsyncSession):
+async def tariff_button(message: Message, i18n: I18nContext, session: AsyncSession):
     await message.answer(
+        text=i18n.tariff_message(), reply_markup=await kb_tariff(session)
+    )
+
+
+@router.callback_query(F.data == "tariff_button")
+async def tariff_callback(
+    callback: CallbackQuery, i18n: I18nContext, session: AsyncSession
+):
+    await callback.message.answer(
         text=i18n.tariff_message(), reply_markup=await kb_tariff(session)
     )
 

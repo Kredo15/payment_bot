@@ -43,21 +43,39 @@ subscription_message =
     - <i>Period</i>: { $duration_days } days
     - <i>Price</i>: { $price } { $currency }
 
+referral_info =
+        <b>🤝 Referral program</b>
+
+        <i>Invite your friends and get bonuses!</i>
+
+        <b>How does it work?</b>
+        <b>•</b> For each guest — <b>+1 subscription day</b> and +1 to the referral counter.
+        <b>•</b> The more friends you have, the higher your</b> and more privileges!
+        <b>🏆 Referral levels:</b>
+        <b>1 level</b> — 0 referral
+        <b>2 level</b> — 1–2 referral
+        <b>3 level</b> — 3–9 referral
+        <b>4 level</b> — 10–29 referral
+        <b>5 level</b> — 30+ referral
+
+        <b>🚀 How can I level up?</b>
+        — Just invite your friends! Progress and current level are always visible in your <b>profile</b>.
+
 invite_friend_message =
-        "👥 <b>Invite a friend and get a bonus!</b>"
+        👥 <b>Invite a friend and get a bonus!</b>
 
-        "Send this link to your friends, and you'll get a nice bonus for each new user!"
+        Send this link to your friends, and you'll get a nice bonus for each new user!
 
-        f"{ref_link}"
+        { $ref_link }
 
 referral_list =
-    "<b>Your referrals</b>"
+    <b>Your referrals</b>
 
 referral_all =
-    "All { $all } people"
+    All { $all } people
 
 not_referral =
-    "You don't have any referrals yet. Invite your friends and get a bonus!"
+    You don't have any referrals yet. Invite your friends and get a bonus!
 
 payment_method =
     Product: Private chanel
@@ -86,6 +104,14 @@ email_request =
 en_lang = English
 ru_lang = Русский
 lang_is_switched = Display language is { en_lang }.
+
+change_email =
+    📝 Editing mail
+
+    Enter the E-mail in the format: customer@mail.ru
+
+not_valid_email =
+    Incorrect mail format
 
 #Buttons
 tariff_button = 💳 Tariff plans
