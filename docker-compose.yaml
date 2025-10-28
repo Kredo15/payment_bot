@@ -1,4 +1,37 @@
 services:
+  pgdb:
+    image: postgres:17
+    container_name: pgdb
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ 'CMD', 'pg_isready', '-U', 'postgres' ]
+
+  pgbouncer:
+    container_name: pgbouncer
+    image: edoburu/pgbouncer:v1.24.0-p1
+    restart: unless-stopped
+    depends_on:
+      - pgdb
+    environment:
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASS}
+      - DB_HOST=pgdb
+      - DB_NAME=${DB_NAME}
+      - ADMIN_USERS=postgres
+      - POOL_MODE=transaction
+      - AUTH_TYPE=scram-sha-256
+    volumes:
+      - pgbouncer-data:/var/lib/pgbouncer
+    healthcheck:
+      test: [ 'CMD', 'pg_isready', '-h', 'localhost' ]
+
   redis:
     image: redis:8.2
     container_name: redis
@@ -6,3 +39,21 @@ services:
       - "6379:6379"
     env_file:
       - .env
+
+  app:
+    build: .
+    container_name: app
+    depends_on:
+      - pgbouncer
+      - redis
+    entrypoint:
+      - ./bin/entrypoint.sh
+    volumes:
+      - .:/application
+    env_file:
+      - .env
+
+volumes:
+  postgres-data:
+  pgbouncer-data:
+  redis-data:

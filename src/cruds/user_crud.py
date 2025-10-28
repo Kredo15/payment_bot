@@ -6,10 +6,12 @@ from sqlalchemy.schema import Sequence
 
 from src.database.models import AdminsOrm, UsersOrm
 from src.core.db_dependency import get_async_session
+from src.cache.redis_cache import cached
 
 logger = logging.getLogger(__name__)
 
 
+@cached(key_prefix="user")
 async def check_admin(user_id: int) -> bool:
     async with get_async_session() as session:
         admins = await session.scalar(
@@ -21,6 +23,7 @@ async def check_admin(user_id: int) -> bool:
     return False
 
 
+@cached(key_prefix="user")
 async def check_user(
     user_id: int,
     first_name: str,
@@ -41,6 +44,7 @@ async def check_user(
         await session.commit()
 
 
+@cached(key_prefix="user")
 async def get_user_data(user_id: int, session: AsyncSession) -> dict:
     user = await session.scalar(select(UsersOrm).where(UsersOrm.telegram_id == user_id))
     return {
@@ -49,6 +53,7 @@ async def get_user_data(user_id: int, session: AsyncSession) -> dict:
     }
 
 
+@cached(key_prefix="user")
 async def get_language(user_id: int) -> str | None:
     # noinspection PyBroadException
     try:
@@ -72,9 +77,10 @@ async def set_language(user_id: int, locale: str) -> None:
         await session.commit()
 
 
+@cached(key_prefix="user")
 async def get_referrals(user_id: int, session: AsyncSession) -> Sequence:
     result = await session.execute(
-        select(UsersOrm).where(UsersOrm.referrer_id == user_id)
+        select(UsersOrm).where(UsersOrm.referral_id == user_id)
     )
     return result.scalars().all()
 

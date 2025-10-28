@@ -4,7 +4,7 @@ from aiogram.filters import CommandStart
 from sqlalchemy.ext.asyncio import AsyncSession
 from aiogram_i18n import I18nContext, LazyProxy
 
-from service.utils import get_referral
+from src.service.utils import get_referral
 from src.cruds.user_crud import check_user
 from src.keyboards.users_kb import main_kb
 

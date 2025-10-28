@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from aiogram_i18n import I18nContext, LazyProxy
 from aiogram.fsm.context import FSMContext
 
-from keyboards.subscription_kb import kb_tariff, kb_payment
+from src.keyboards.subscription_kb import kb_tariff, kb_payment
 from src.cruds.subscription_crud import get_subscription
 from src.service.utils import set_state
 

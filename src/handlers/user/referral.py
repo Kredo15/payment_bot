@@ -3,7 +3,7 @@ from aiogram.types import CallbackQuery
 from aiogram_i18n import I18nContext
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from service.utils import get_ref_link
+from src.service.utils import get_ref_link
 from src.keyboards.referral_kb import referral, back_to_referral_info
 from src.cruds.user_crud import get_referrals
 

@@ -22,7 +22,7 @@ class UsersOrm(Base):
     email: Mapped[EmailStr] = mapped_column(String, nullable=True)
     language: Mapped[str] = mapped_column(default="ru")
     subscription_end_date: Mapped[datetime | None]
-    referrer_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=True)
+    referral_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=True)
     is_active: Mapped[bool] = mapped_column(default=True)
     created_at: Mapped[created_at]
 

@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).parent.parent.parent
 
 class DBSettings(BaseSettings):
     DB_HOST: str
-    DB_PORT: str
+    DB_PORT: int
     DB_USER: str
     DB_PASS: SecretStr
     DB_NAME: str
@@ -31,7 +31,6 @@ class DBSettings(BaseSettings):
 class RedisSettings(BaseSettings):
     REDIS_HOST: str
     REDIS_PORT: int
-    REDIS_DB: int
 
     model_config = SettingsConfigDict(
         env_file=f"{BASE_DIR}/.env", env_file_encoding="utf8", extra="ignore"

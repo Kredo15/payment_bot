@@ -6,8 +6,10 @@ from sqlalchemy.schema import Sequence
 
 from src.database.models import SubscriptionsOrm, SubscriptionHistoryOrm, PaymentsOrm
 from src.core.db_dependency import get_async_session
+from src.cache.redis_cache import cached
 
 
+@cached(key_prefix="subscription")
 async def get_subscriptions(session: AsyncSession) -> Sequence:
     subscriptions = await session.scalars(
         select(SubscriptionsOrm)
@@ -17,6 +19,7 @@ async def get_subscriptions(session: AsyncSession) -> Sequence:
     return subscriptions.all()
 
 
+@cached(key_prefix="subscription")
 async def get_subscription(name: str, session: AsyncSession):
     subscription = await session.scalar(
         select(SubscriptionsOrm).where(

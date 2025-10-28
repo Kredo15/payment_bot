@@ -6,7 +6,7 @@ if TYPE_CHECKING:
     from aiogram import Dispatcher, Router
 
 from . import admins
-from .user import payments, profile, subscription, start, referral
+from .user import payments, profile, subscription, start, referral, language, email
 
 logger = logging.getLogger("handlers")
 
@@ -16,6 +16,8 @@ all_routers: list[Router] = [
     subscription.router,
     profile.router,
     referral.router,
+    language.router,
+    email.router
 ]
 
 
