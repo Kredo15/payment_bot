@@ -1,0 +1,46 @@
+{
+  "dashboard": {
+    "title": "tgbot",
+    "panels": [
+      {
+        "title": "Messages Processing Rate",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "rate(telegram_bot_messages_total[5m])",
+            "legendFormat": "{{command}}"
+          }
+        ]
+      },
+      {
+        "title": "Message Processing Time",
+        "type": "heatmap",
+        "targets": [
+          {
+            "expr": "telegram_bot_message_processing_seconds_bucket",
+            "format": "heatmap"
+          }
+        ]
+      },
+      {
+        "title": "Active Users (last 5m)",
+        "type": "gauge",
+        "targets": [
+          {
+            "expr": "count by (user_id) (telegram_bot_user_activity_total[5m])"
+          }
+        ]
+      },
+      {
+        "title": "Error Rate",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(telegram_bot_errors_total[5m])",
+            "legendFormat": "{{error_type}}"
+          }
+        ]
+      }
+    ]
+  }
+}
