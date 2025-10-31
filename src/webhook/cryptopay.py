@@ -16,7 +16,7 @@ from src.core.message import LogMessages
 logger = logging.getLogger(__name__)
 
 crypto = AioCryptoPay(
-    token=settings.crypto_settings.CRYPTO_PAY_TOKEN, network=Networks.TEST_NET
+    token=settings.CRYPTO_PAY_TOKEN, network=Networks.TEST_NET
 )
 
 
@@ -64,7 +64,7 @@ async def create_invoice_crypt(data, user_id: int, chat_id: int) -> Invoice:
     invoice = await crypto.create_invoice(
         currency_type="fiat",
         fiat=data["currency"],
-        accepted_assets=settings.crypto_settings.ACCEPTED_ASSETS,
+        accepted_assets=settings.ACCEPTED_ASSETS,
         amount=data["price"],
         payload=f'{data["name"]} | {user_id} | {chat_id}',
     )

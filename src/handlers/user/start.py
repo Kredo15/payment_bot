@@ -13,7 +13,6 @@ router = Router()
 
 @router.message(CommandStart())
 async def start_command(message: Message, i18n: I18nContext, session: AsyncSession):
-    await message.answer(text=i18n.hello(), reply_markup=main_kb())
     referral_id = get_referral(message)
     user_id = message.from_user.id
     first_name = message.from_user.first_name
@@ -25,6 +24,7 @@ async def start_command(message: Message, i18n: I18nContext, session: AsyncSessi
         referral_id=referral_id,
         session=session,
     )
+    await message.answer(text=i18n.hello(), reply_markup=main_kb())
 
 
 @router.message(F.text == LazyProxy("support_button"))

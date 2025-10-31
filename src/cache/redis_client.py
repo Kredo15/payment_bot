@@ -13,8 +13,8 @@ class RedisCache:
         """Инициализация подключения к Redis"""
         self.redis = Redis(
             connection_pool=ConnectionPool(
-                host=settings.redis_settings.REDIS_HOST,
-                port=settings.redis_settings.REDIS_PORT,
+                host=settings.REDIS_HOST,
+                port=settings.REDIS_PORT,
                 db=1,
             ),
         )
@@ -49,4 +49,3 @@ class RedisCache:
         if self.redis:
             return await self.redis.exists(key)
         return False
-

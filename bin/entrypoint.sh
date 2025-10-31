@@ -3,5 +3,4 @@
 alembic revision --autogenerate -m "init"
 alembic upgrade head
 
-exec python3 main.py &
-exec python3 webhook.py
+exec python3 main.py

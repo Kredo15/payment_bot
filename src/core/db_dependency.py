@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine, Asyn
 from src.core.settings import settings
 
 engine = create_async_engine(
-    settings.db_settings.database_url,
+    settings.pgdb_url,
     poolclass=NullPool
 )
 

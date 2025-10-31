@@ -5,7 +5,32 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 BASE_DIR = Path(__file__).parent.parent.parent
 
 
-class DBSettings(BaseSettings):
+class EnvBaseSettings(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_file=f"{BASE_DIR}/.env", env_file_encoding="utf8", extra="ignore"
+    )
+
+
+class WebhookSettings(EnvBaseSettings):
+    WEBHOOK_BASE_URL: str
+    WEBHOOK_PATH: str
+    WEBHOOK_SECRET: str
+    WEBHOOK_HOST: str
+    WEBHOOK_PORT: int
+
+    @property
+    def webhook_url(self) -> str:
+        return f"{self.WEBHOOK_BASE_URL}{self.WEBHOOK_PATH}"
+
+
+class BotSettings(WebhookSettings):
+    API_KEY_BOT: str
+    ADMIN: int
+    PRIVATE_CHANEL: int
+    URL_CHANEL: str
+
+
+class PgSettings(EnvBaseSettings):
     DB_HOST: str
     DB_PORT: int
     DB_USER: str
@@ -13,7 +38,7 @@ class DBSettings(BaseSettings):
     DB_NAME: str
 
     @property
-    def database_url(self):
+    def pgdb_url(self):
         return (
             f"postgresql+asyncpg:"
             f"//{self.DB_USER}:"
@@ -23,59 +48,28 @@ class DBSettings(BaseSettings):
             f"{self.DB_NAME}"
         )
 
-    model_config = SettingsConfigDict(
-        env_file=f"{BASE_DIR}/.env", env_file_encoding="utf8", extra="ignore"
-    )
 
-
-class RedisSettings(BaseSettings):
+class RedisSettings(EnvBaseSettings):
     REDIS_HOST: str
     REDIS_PORT: int
-
-    model_config = SettingsConfigDict(
-        env_file=f"{BASE_DIR}/.env", env_file_encoding="utf8", extra="ignore"
-    )
 
     @property
     def redis_url(self):
         return f"redis://{self.REDIS_HOST}:{self.REDIS_PORT}"
 
 
-class CryptoSettings(BaseSettings):
+class PaymentSettings(EnvBaseSettings):
     CRYPTO_PAY_TOKEN: str
     ACCEPTED_ASSETS: str
 
-    model_config = SettingsConfigDict(
-        env_file=f"{BASE_DIR}/.env", env_file_encoding="utf8", extra="ignore"
-    )
-
-
-class YoomoneySettings(BaseSettings):
     YOOMONEY_CLIENT_ID: str
     YOOMONEY_REDIRECT_URL: str
     YOOMONEY_ACCOUNT_ID: str
     YOOMONEY_SECRET_KEY: str
 
-    model_config = SettingsConfigDict(
-        env_file=f"{BASE_DIR}/.env", env_file_encoding="utf8", extra="ignore"
-    )
 
-
-class Settings(BaseSettings):
+class Settings(BotSettings, PgSettings, RedisSettings, PaymentSettings):
     MODE: str
-    API_KEY_BOT: str
-    ADMIN: int
-    PRIVATE_CHANEL: int
-    URL_CHANEL: str
-
-    db_settings: DBSettings = DBSettings()
-    redis_settings: RedisSettings = RedisSettings()
-    crypto_settings: CryptoSettings = CryptoSettings()
-    yoomoney_settings: YoomoneySettings = YoomoneySettings()
-
-    model_config = SettingsConfigDict(
-        env_file=f"{BASE_DIR}/.env", env_file_encoding="utf8", extra="ignore"
-    )
 
 
 settings = Settings()

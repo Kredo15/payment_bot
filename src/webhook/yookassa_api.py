@@ -16,8 +16,8 @@ from src.core.message import LogMessages
 
 logger = logging.getLogger(__name__)
 
-Configuration.account_id = settings.yoomoney_settings.YOOMONEY_ACCOUNT_ID
-Configuration.secret_key = settings.yoomoney_settings.YOOMONEY_SECRET_KEY
+Configuration.account_id = settings.YOOMONEY_ACCOUNT_ID
+Configuration.secret_key = settings.YOOMONEY_SECRET_KEY
 
 
 def create_invoice_yookassa(data: dict, user_id: int, chat_id: int):
@@ -28,7 +28,7 @@ def create_invoice_yookassa(data: dict, user_id: int, chat_id: int):
             "payment_method_data": {"type": "bank_card"},
             "confirmation": {
                 "type": "redirect",
-                "return_url": settings.yoomoney_settings.YOOMONEY_REDIRECT_URL,
+                "return_url": settings.YOOMONEY_REDIRECT_URL,
             },
             "capture": True,
             "metadata": {
