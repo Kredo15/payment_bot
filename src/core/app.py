@@ -1,5 +1,4 @@
 import logging
-import asyncio
 from aiohttp import web
 
 from aiogram import Bot, Dispatcher
@@ -37,7 +36,15 @@ async def on_startup(dispatcher: Dispatcher, bot: Bot):
     app.router.add_route("POST", "/crypto-secret-path", crypto.get_updates)
     app.router.add_route("POST", "/yookassa", yookassa_webhook_handler)
 
-    logging.info("Бот запущен!")
+    await bot.set_webhook(
+        settings.webhook_url,
+        allowed_updates=dp.resolve_used_update_types(),
+        secret_token=settings.WEBHOOK_SECRET
+    )
+    await redis_client.init_redis()
+    await bot.send_message(chat_id=settings.ADMIN, text='Бот запущен!')
+
+    logging.info("Старт!")
 
 
 async def on_shutdown(dispatcher: Dispatcher, bot: Bot):
@@ -52,16 +59,8 @@ async def on_shutdown(dispatcher: Dispatcher, bot: Bot):
     logging.info("Соединения закрыты.")
 
 
-async def setup_webhook() -> None:
+def setup_webhook() -> None:
     from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
-    from aiohttp.web import AppRunner, TCPSite
-
-    await bot.set_webhook(
-        settings.webhook_url,
-        allowed_updates=dp.resolve_used_update_types(),
-        secret_token=settings.WEBHOOK_SECRET,
-        drop_pending_updates=True
-    )
 
     webhook_requests_handler = SimpleRequestHandler(
         dispatcher=dp,
@@ -71,17 +70,10 @@ async def setup_webhook() -> None:
     webhook_requests_handler.register(app, path=settings.WEBHOOK_PATH)
     setup_application(app, dp, bot=bot)
 
-    runner = AppRunner(app)
-    await runner.setup()
-    site = TCPSite(runner, host=settings.WEBHOOK_HOST, port=settings.WEBHOOK_PORT)
-    await site.start()
 
-    await asyncio.Event().wait()
-
-
-async def run_bot():
+def run_bot():
     dp.startup.register(on_startup)
     dp.shutdown.register(on_shutdown)
 
-    await redis_client.init_redis()
-    await setup_webhook()
+    setup_webhook()
+    web.run_app(app, host=settings.WEBHOOK_HOST, port=settings.WEBHOOK_PORT)

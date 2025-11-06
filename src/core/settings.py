@@ -13,10 +13,10 @@ class EnvBaseSettings(BaseSettings):
 
 class WebhookSettings(EnvBaseSettings):
     WEBHOOK_BASE_URL: str
-    WEBHOOK_PATH: str
     WEBHOOK_SECRET: str
     WEBHOOK_HOST: str
     WEBHOOK_PORT: int
+    WEBHOOK_PATH: str
 
     @property
     def webhook_url(self) -> str:

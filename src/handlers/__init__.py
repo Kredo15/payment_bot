@@ -24,7 +24,7 @@ all_routers: list[Router] = [
 def setup_routers(dp: Dispatcher) -> None:
     dp.include_routers(*all_routers)
 
-    logger.debug("%s routers has been load", len(all_routers))
+    logger.info("%s routers has been load", len(all_routers))
 
 
 __all__ = ["setup_routers"]

@@ -1,6 +1,6 @@
 FROM python:3.11-slim
 
-ENV PYTHONPATH=/app
+ENV PYTHONPATH=/src
 
 RUN apt-get update
 # Удаляем кэшированные списки пакетов APT
